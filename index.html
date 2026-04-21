@@ -320,6 +320,50 @@ const mainStories = [
         quote:"Keeping it warm in a resource-constrained environment means it's dead anyway — just slower and messier. A clean kill was more honest, and freed us to move fast."
       }
     ]
+  },
+  {
+    id:"ms3",num:"Story 03",
+    title:"MCP Custom Connector — Modular vs Monolith",
+    ctx:"Custom federated connectors · MCP · Microsoft 365 Copilot",
+    competencies:["influence","conviction"],
+    color:"#c77dff",bg:"rgba(199,125,255,0.1)",
+    tags:[{label:"indirect influence",color:"#c77dff",bg:"rgba(199,125,255,0.12)"},{label:"conviction vs data",color:"#ffd93d",bg:"rgba(255,217,61,0.12)"}],
+    summary:"Engineering wanted to copy ChatGPT's search-and-fetch constraint for MCP connectors. No data. Tight timeline. I disagreed — ran evals, proved modular tools performed better, and changed the architecture.",
+    star:{
+      s:"We were building custom federated connectors — letting enterprise admins connect MCP servers so end users could ground Copilot responses in that data. ChatGPT had launched a similar offering with a specific constraint: MCP servers must expose only two tools — a monolithic search tool and a monolithic fetch tool. Engineering recommended we follow the same pattern to maximise compatibility with existing ISV implementations.",
+      t:"Decide whether to constrain our connector offering to search-and-fetch only (ChatGPT's approach) or support any read-only tools available in the MCP server. The decision had direct implications for developer experience, ecosystem compatibility, and response quality — and had to be made under tight timeline pressure.",
+      a:"I disagreed with engineering's recommendation but didn't have hard data yet. My hypothesis had two parts:\n\n1. Developer DX: External systems like GitHub or Jira expose multiple distinct entities. A monolithic search-and-fetch implementation is harder to build and maintain than modular tools. Developers would naturally gravitate toward modular patterns.\n\n2. Ecosystem compatibility: MCP's core value is write-once, run-anywhere. If search-and-fetch was adopted only by ChatGPT and us, it fragments the ecosystem rather than standardising it.\n\nI spoke to ISVs — Canva and Monday.com had already implemented both patterns, but were uncertain which to standardise on. No clear signal from the market.\n\nEngineering's counter-argument was technically sound: fewer tools means fewer choices for the LLM, which should improve invocation accuracy. Theoretically correct.\n\nRather than deadlocking, I used indirect influence — I took the two approaches, their pros and cons, and the confidence gap to my manager. Made the case that Microsoft had no internal data to justify either approach with certainty, and that the decision would set a standard for ISVs and customers. He agreed: we needed our own evidence before locking architecture.\n\nWith that cover, engineering agreed to run a structured evaluation. We built representative MCP servers for target LOB use cases and tested both approaches. Metrics: invocation rate and LLM checklist (quality of answers).\n\nResults: modular tools outperformed search-and-fetch on both metrics. When we investigated why, we found that modern LLMs with larger context windows could handle the tool complexity — so engineering's theoretical concern about accuracy didn't apply in practice with our architecture and models.",
+      r:"Connector architecture was designed to accept any read-only tools — not constrained to search-and-fetch. Four months later, ChatGPT moved away from their constraint too, and no ISV partner adopted search-and-fetch as a standard.\n\nLearning: engineering's instinct to follow a successful competitor is rational under time pressure. But when the hypothesis is unvalidated and the decision sets a long-term standard, the cost of getting it wrong is too high to skip the evidence. Front-load the data, even if it costs a few weeks."
+    },
+    quote:"Engineering's logic was theoretically sound — but theory and our architecture didn't match. I wasn't willing to lock a long-term standard on an untested assumption.",
+    followups:[
+      {
+        id:"fu3a",label:"Follow-up 1",
+        title:"Why Not Just Support Both Patterns?",
+        question:"Canva and Monday already had both search-and-fetch and modular tools. Why force a choice at all — why not just support both?",
+        summary:"If ISVs already had both patterns implemented, why was this a conflict at all? Why not just accept both and be unopinionated?",
+        star:{
+          s:"During ISV conversations, it emerged that Canva and Monday had already implemented both search-and-fetch and modular tools in their MCP servers — sitting on the fence waiting for guidance.",
+          t:"Clarify whether the real question was 'which pattern to support' or 'whether to constrain at all' — and make sure the architecture reflected the right framing.",
+          a:"This reframe was important. The real conflict wasn't modular vs search-and-fetch — it was: should we constrain to only search-and-fetch (ChatGPT's approach), or accept any read-only tool?\n\nSearch-and-fetch is itself a valid set of read-only tools. If an ISV implements it well, it should work. The argument was never to exclude it — it was to not mandate it as the only pattern.\n\nBeing unopinionated was actually the correct position. It respected developer choice, maximised compatibility, and let the market signal which pattern performs best in practice.",
+          r:"Architecture was designed to be read-only-tool agnostic — not prescriptive. ISVs who had search-and-fetch worked fine. ISVs with modular tools also worked. No developer was forced to rebuild.\n\nLearning: sometimes the best architecture decision is to remove the constraint, not pick a winner."
+        },
+        quote:"The question was never modular vs search-and-fetch. It was: why constrain at all? Being unopinionated was the right call — let developers choose, let quality data decide."
+      },
+      {
+        id:"fu3b",label:"Follow-up 2",
+        title:"Engineering Was Right Theoretically — How Did You Present That?",
+        question:"When the eval results came back, engineering's theoretical argument was proven wrong in practice. How did you present that without making it feel like you were saying 'I told you so'?",
+        summary:"The data proved engineering wrong. How do you close the loop in a way that builds trust rather than creating defensiveness?",
+        star:{
+          s:"Eval results clearly showed modular tools outperformed search-and-fetch. Engineering had staked a position on the opposing hypothesis. The risk: presenting the results in a way that felt like a victory lap rather than shared learning.",
+          t:"Close the loop on the eval findings in a way that moved the team forward together — not a win/lose moment.",
+          a:"Led with the explanation, not the verdict. Framed it as: their hypothesis was theoretically correct — and would have been right with smaller context windows and older models. What changed the answer was the specific architecture we were building on, and the capability of the models we were actually shipping with.\n\nThis mattered because it turned the result into a shared insight: the decision is architecture-and-model dependent, not a universal truth. That gave engineering something to own — they understood the nuance rather than being told they were wrong.",
+          r:"Team aligned quickly. No defensiveness. The framing also set a useful precedent: when we revisit this decision as models evolve, we now have a framework for re-evaluating it.\n\nLearning: when data proves someone wrong, lead with why they were right in a different context. It preserves the relationship and gets you to action faster."
+        },
+        quote:"I didn't say 'you were wrong'. I said 'your logic held — but our architecture and model generation changed the answer'. That's a different conversation."
+      }
+    ]
   }
 ];
 
