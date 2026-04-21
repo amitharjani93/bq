@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Interview Story Cards</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0f0e17;--surface:#1c1a2e;--surface2:#252340;--surface3:#2e2b50;
+  --text:#f4f2ff;--muted:#9b97be;--dim:#5a5780;--border:rgba(255,255,255,0.07);
+  --c1:#ff6b6b;--c2:#ffd93d;--c3:#6bcb77;--c4:#4d96ff;--c5:#c77dff;--c6:#ff9f43;--c7:#48dbfb;--c8:#ff6bb5;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+body{min-height:100dvh;display:flex;flex-direction:column;}
+
+.blobs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.12;animation:drift 16s ease-in-out infinite alternate;}
+.b1{width:500px;height:500px;background:var(--c5);top:-150px;left:-150px;}
+.b2{width:350px;height:350px;background:var(--c4);bottom:50px;right:-100px;animation-delay:-6s;}
+.b3{width:280px;height:280px;background:var(--c1);top:50%;left:20%;animation-delay:-11s;}
+@keyframes drift{from{transform:translate(0,0)scale(1);}to{transform:translate(32px,22px)scale(1.1);}}
+
+.wrap{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;max-width:500px;margin:0 auto;width:100%;padding:0 16px 40px;}
+
+/* HEADER */
+.hdr{padding:22px 0 14px;}
+.hdr-eye{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:3px;}
+.hdr-title{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;line-height:1.2;}
+.hdr-title em{color:var(--c2);font-style:normal;}
+
+/* TOP TOGGLE — By Behavior / All Stories */
+.top-toggle{display:flex;gap:6px;margin-bottom:16px;background:var(--surface);border-radius:12px;padding:4px;border:1.5px solid var(--border);}
+.ttab{flex:1;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;padding:8px 10px;border-radius:9px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;text-align:center;}
+.ttab.on{background:var(--c2);color:#0f0e17;}
+
+/* BREADCRUMB */
+.breadcrumb{display:flex;align-items:center;gap:6px;margin-bottom:16px;flex-wrap:wrap;min-height:20px;}
+.bc-item{font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:var(--dim);cursor:pointer;-webkit-tap-highlight-color:transparent;background:none;border:none;padding:0;transition:color .15s;}
+.bc-item:hover{color:var(--text);}
+.bc-item.active{color:var(--text);cursor:default;}
+.bc-sep{color:var(--dim);font-size:12px;}
+
+/* VIEW TRANSITIONS */
+.view{transition:opacity .13s;display:none;flex-direction:column;}
+.view.active{display:flex;}
+.view.fading{opacity:0;}
+
+/* ══════════════════════════════════
+   LEVEL 1A — COMPETENCY INDEX
+══════════════════════════════════ */
+.comp-card{
+  background:var(--surface);border:1.5px solid var(--border);border-radius:18px;
+  padding:15px 16px;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:14px;margin-bottom:10px;
+  -webkit-tap-highlight-color:transparent;
+}
+.comp-card:active{transform:scale(.98);}
+.comp-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.comp-info{flex:1;min-width:0;}
+.comp-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;line-height:1.3;}
+.comp-sub{font-size:11.5px;color:var(--muted);line-height:1.4;margin-bottom:6px;}
+.comp-companies{display:flex;gap:4px;flex-wrap:wrap;}
+.co-badge{font-size:9px;font-weight:600;padding:2px 7px;border-radius:5px;border:1px solid;letter-spacing:.02em;}
+.comp-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.comp-count{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.comp-arrow{color:var(--dim);font-size:18px;}
+
+/* ══════════════════════════════════
+   LEVEL 1B — ALL STORIES LIST
+══════════════════════════════════ */
+.all-story-card{
+  background:var(--surface);border:1.5px solid var(--border);border-radius:18px;
+  padding:16px 18px;cursor:pointer;transition:all .2s;margin-bottom:10px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  -webkit-tap-highlight-color:transparent;
+}
+.all-story-card:active{transform:scale(.98);}
+.as-meta{flex:1;min-width:0;}
+.as-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;color:var(--dim);letter-spacing:.1em;margin-bottom:5px;}
+.as-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:3px;}
+.as-ctx{font-size:12px;color:var(--muted);margin-bottom:8px;}
+.as-tags{display:flex;gap:5px;flex-wrap:wrap;}
+.as-tag{font-size:10px;font-weight:500;padding:3px 9px;border-radius:7px;border:1px solid;}
+.as-arrow{font-size:18px;color:var(--dim);margin-top:2px;flex-shrink:0;}
+
+/* ══════════════════════════════════
+   LEVEL 2 — MAIN STORIES FOR BEHAVIOR
+══════════════════════════════════ */
+.section-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:14px 16px;border-radius:16px;}
+.section-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.section-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;line-height:1.3;}
+.section-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.co-strip{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;}
+
+.main-story-card{
+  background:var(--surface);border:1.5px solid var(--border);border-radius:18px;
+  padding:18px;cursor:pointer;transition:all .2s;margin-bottom:12px;
+  -webkit-tap-highlight-color:transparent;
+}
+.main-story-card:active{transform:scale(.98);}
+.ms-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;color:var(--dim);letter-spacing:.1em;margin-bottom:5px;}
+.ms-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:4px;}
+.ms-ctx{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:10px;}
+.ms-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.ms-tag{font-size:10px;font-weight:500;padding:3px 9px;border-radius:7px;border:1px solid;}
+.ms-footer{display:flex;align-items:center;justify-content:space-between;}
+.ms-hint{font-size:11px;color:var(--dim);}
+.ms-hint b{font-weight:700;}
+.ms-arrow{font-size:18px;}
+
+/* ══════════════════════════════════
+   LEVEL 3 — FLASHCARD DETAIL
+══════════════════════════════════ */
+
+/* story identity bar */
+.story-id-bar{border-radius:16px;padding:14px 18px;margin-bottom:16px;}
+.sid-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:.12em;margin-bottom:3px;opacity:.7;}
+.sid-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;line-height:1.25;margin-bottom:3px;}
+.sid-ctx{font-size:12px;opacity:.65;}
+
+/* card selector tabs */
+.card-selector{display:flex;gap:0;margin-bottom:16px;background:var(--surface);border-radius:14px;padding:4px;border:1.5px solid var(--border);}
+.cstab{flex:1;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;padding:8px 5px;border-radius:10px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;text-align:center;-webkit-tap-highlight-color:transparent;line-height:1.35;}
+.cstab .cst-main{display:block;font-size:11px;}
+.cstab .cst-sub{display:block;font-size:9px;font-weight:400;color:var(--dim);margin-top:1px;}
+.cstab.on{background:var(--surface2);color:var(--text);}
+.cstab.on .cst-sub{color:var(--muted);}
+
+/* flip card */
+.fc-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.fc-counter{font-family:'Syne',sans-serif;font-size:11px;color:var(--dim);}
+.fc-flip-state{display:flex;align-items:center;gap:5px;font-family:'Syne',sans-serif;font-size:10px;color:var(--dim);letter-spacing:.05em;}
+.fc-dot{width:5px;height:5px;border-radius:50%;background:var(--dim);transition:background .2s;}
+.fc-dot.on{background:var(--c2);}
+
+.card-scene{perspective:1200px;height:400px;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:16px;}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
+.card-inner.flipped{transform:rotateY(180deg);}
+.card-face{
+  position:absolute;inset:0;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:22px;padding:24px 22px;
+  display:flex;flex-direction:column;
+  border:1.5px solid var(--border);
+  background:var(--surface);
+}
+.card-back{transform:rotateY(180deg);overflow-y:auto;}
+.card-back::-webkit-scrollbar{width:3px;}
+.card-back::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px;}
+
+/* FRONT */
+.cf-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.cf-num{font-family:'Syne',sans-serif;font-size:50px;font-weight:800;line-height:1;letter-spacing:-3px;color:rgba(255,255,255,0.22);}
+.cf-type{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:8px;margin-top:8px;}
+.cf-category{display:inline-flex;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:8px;margin-bottom:8px;align-self:flex-start;}
+.cf-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;line-height:1.3;color:var(--text);margin-bottom:5px;}
+.cf-sub{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.cf-summary-box{background:var(--surface2);border-radius:13px;padding:13px 15px;flex:1;margin-bottom:13px;}
+.cf-summary-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
+.cf-summary-text{font-size:13px;color:var(--muted);line-height:1.65;}
+/* followup question box */
+.cf-q-box{background:rgba(255,217,61,0.07);border:1px solid rgba(255,217,61,0.2);border-radius:13px;padding:12px 15px;flex:1;margin-bottom:13px;}
+.cf-q-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--c2);margin-bottom:6px;}
+.cf-q-text{font-size:13px;color:var(--muted);line-height:1.65;font-style:italic;}
+.cf-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.cf-tag{font-size:11px;font-weight:500;padding:3px 10px;border-radius:8px;border:1px solid;}
+
+/* BACK */
+.cb-header{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.star-pills-row{display:flex;gap:4px;}
+.spill{font-family:'Syne',sans-serif;font-size:9px;font-weight:800;padding:3px 7px;border-radius:6px;}
+.sp-s{background:rgba(199,125,255,.2);color:#c77dff;}
+.sp-t{background:rgba(77,150,255,.2);color:#4d96ff;}
+.sp-a{background:rgba(107,203,119,.2);color:#6bcb77;}
+.sp-r{background:rgba(255,217,61,.2);color:#ffd93d;}
+.star-block{margin-bottom:14px;}
+.star-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.star-badge{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;padding:3px 10px;border-radius:6px;}
+.sb-s{background:rgba(199,125,255,.15);color:#c77dff;}
+.sb-t{background:rgba(77,150,255,.15);color:#4d96ff;}
+.sb-a{background:rgba(107,203,119,.15);color:#6bcb77;}
+.sb-r{background:rgba(255,217,61,.15);color:#ffd93d;}
+.star-lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;}
+.star-text{font-size:13px;color:var(--muted);line-height:1.68;}
+.divider{height:1px;background:var(--border);margin:3px 0 14px;}
+.key-quote{background:var(--surface2);border-left:3px solid var(--c2);border-radius:0 12px 12px 0;padding:11px 14px;font-size:13px;font-style:italic;color:var(--muted);line-height:1.6;margin-top:2px;}
+
+/* confetti */
+.cp{position:fixed;pointer-events:none;animation:cf 1.2s ease-in forwards;z-index:999;}
+@keyframes cf{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(150px) rotate(450deg);opacity:0;}}
+</style>
+</head>
+<body>
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<div class="wrap">
+  <div class="hdr">
+    <div class="hdr-eye">week 1 · behavioral prep</div>
+    <div class="hdr-title">Interview <em>Story Bank</em></div>
+  </div>
+
+  <!-- top-level toggle: only visible at level 1 -->
+  <div class="top-toggle" id="top-toggle">
+    <button class="ttab on" onclick="setRootTab('behaviors')">By Behavior</button>
+    <button class="ttab" onclick="setRootTab('all')">All Stories</button>
+  </div>
+
+  <!-- breadcrumb -->
+  <div class="breadcrumb" id="breadcrumb"></div>
+
+  <!-- views -->
+  <div id="view-behaviors" class="view active"></div>
+  <div id="view-all" class="view"></div>
+  <div id="view-stories" class="view"></div>
+  <div id="view-detail" class="view"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════
+   DATA
+═══════════════════════════════ */
+const competencies = [
+  {id:"uncertainty",name:"Shipping Under Uncertainty",desc:"Making defensible calls when data is incomplete or time is short",icon:"🚀",color:"#4d96ff",bg:"rgba(77,150,255,0.12)",companies:["Amazon: Bias for Action","Google: Ambiguity","Meta: Drive Results","Microsoft: Adaptability"]},
+  {id:"influence",name:"Indirect Influence",desc:"Moving teams and decisions without direct authority",icon:"🧲",color:"#c77dff",bg:"rgba(199,125,255,0.12)",companies:["Amazon: Have Backbone","Google: Leadership","Meta: Collaboration","Microsoft: Influencing for Impact","Uber: Champion the Mission"]},
+  {id:"conviction",name:"Conviction vs Data",desc:"When your gut conflicts with the numbers — and what you do about it",icon:"⚖️",color:"#ffd93d",bg:"rgba(255,217,61,0.12)",companies:["Amazon: Dive Deep","Google: Data-Driven","Netflix: Judgment","Microsoft: Judgment"]},
+  {id:"ownership",name:"Ownership & Accountability",desc:"Taking responsibility end-to-end, beyond your job description",icon:"🎯",color:"#6bcb77",bg:"rgba(107,203,119,0.12)",companies:["Amazon: Ownership","Google: Googleyness","Uber: Be an Owner","Salesforce: Trailblazer","Microsoft: Drive for Results"]},
+  {id:"killing",name:"Killing a Feature / Project",desc:"Stopping investment when evidence says stop — and defending that call",icon:"🔪",color:"#ff6b6b",bg:"rgba(255,107,107,0.12)",companies:["Amazon: Frugality","Netflix: Informed Captain","Google: Impact at Scale","Microsoft: Judgment"]},
+  {id:"stakeholder",name:"Stakeholder Management",desc:"Aligning people with competing priorities across functions and levels",icon:"🤝",color:"#ff9f43",bg:"rgba(255,159,67,0.12)",companies:["Amazon: Earn Trust","Meta: Resolve Conflicts","Microsoft: One Microsoft","Salesforce: Collaborate","Uber: Build the Ecosystem"]},
+  {id:"privacy",name:"Trust, Safety & Privacy",desc:"Navigating risk, compliance, and responsible product decisions",icon:"🔐",color:"#48dbfb",bg:"rgba(72,219,251,0.12)",companies:["Amazon: Earn Trust","Microsoft: Customer Obsession","Google: Do the Right Thing","Salesforce: Trust (Core Value #1)"]},
+  {id:"pivot",name:"Strategic Pivot",desc:"Responding to a major market shift or leadership direction change",icon:"🔄",color:"#ff6bb5",bg:"rgba(255,107,181,0.12)",companies:["Amazon: Think Big","Google: Innovation","Netflix: Adaptability","Microsoft: Growth Mindset","Uber: Champion the Mission"]}
+];
+
+const mainStories = [
+  {
+    id:"ms1",num:"Story 01",
+    title:"Dynamic Tool Discovery",
+    ctx:"Declarative agents · MCP · Microsoft 365",
+    competencies:["uncertainty","influence","privacy","stakeholder"],
+    color:"#4d96ff",bg:"rgba(77,150,255,0.1)",
+    tags:[{label:"shipping under uncertainty",color:"#4d96ff",bg:"rgba(77,150,255,0.12)"},{label:"privacy & safety",color:"#48dbfb",bg:"rgba(72,219,251,0.12)"},{label:"stakeholder alignment",color:"#c77dff",bg:"rgba(199,125,255,0.12)"}],
+    summary:"Canva, Monday, HubSpot needed agents to dynamically discover tools without republishing. V1 excluded this. 2-month deadline. Privacy & security nightmare — no blueprint existed.",
+    star:{
+      s:"Canva, Monday, HubSpot were blocked — they needed declarative agents to dynamically discover new tools from MCP servers without republishing. V1 had intentionally excluded this. Customer and partner pressure was high.",
+      t:"Ship a safe version of dynamic tool discovery within 2 months. Dynamically changing tools meant potential data exfiltration, broken trust boundaries, and unclear accountability — a privacy and security nightmare with no prior blueprint.",
+      a:"Made a strategic proxy decision: used Microsoft's own admin & compliance team as a stand-in for external enterprise customers.\n\nRationale — Microsoft has the world's strictest regulatory requirements. Couldn't afford to survey every external admin — that would take months. If the model clears here, it clears broadly.\n\nKey insight: as long as the platform signs off on data leaving the trust boundary, service agreements cascade accountability downward. No need to solve per-tool governance in V1.\n\nScoped MVP to: static vs dynamic agent labeling, audit logs, scoped rollout controls, kill switch. Got sign-off from privacy, security, and legal.",
+      r:"Private preview deployment on track in 3–4 weeks. VIP customers unblocked. Clear path to enrich based on real usage post-preview.\n\nLearning: when you can't get full coverage, find the most stringent proxy. Make the bet explicit. Let private preview be your real validation gate."
+    },
+    quote:"I couldn't talk to every external admin — but if our own team, under the world's strictest compliance, signs off, that's a strong proxy for what VIP customers will need.",
+    followups:[
+      {
+        id:"fu1a",label:"Follow-up 1",
+        title:"VIP Customer Wants Per-Tool Approval",
+        question:"What if a VIP customer says your governance model isn't enough and they need per-tool approval before any tool is dynamically added?",
+        summary:"Post-launch in private preview: a VIP customer says the current model isn't enough — they want per-tool approval before any dynamic addition. This could break the MVP architecture.",
+        star:{
+          s:"Post-launch in private preview, a VIP customer flags the governance model isn't sufficient — they want explicit approval for each new tool before it's dynamically added to an agent.",
+          t:"Decide whether to re-scope the MVP architecture based on this single piece of feedback, without derailing the broader private preview programme.",
+          a:"Did not react to one data point. Committed to running the full private preview — 60 to 90 days — to hear the entire VIP cohort.\n\nRationalize all feedback into requirements at the end. If per-tool approval is P0 for the majority → V1.1. If isolated to one customer → V2 or bilateral conversation, not a pivot.",
+          r:"Protects roadmap integrity. Decisions are pattern-driven, not reactive.\n\nLearning: a single customer request is a signal, not a requirement. Validate the pattern before you re-scope."
+        },
+        quote:"I want 60 days of data before I change architecture. If the majority hits this wall, it's P0. If it's one customer — it's a conversation, not a pivot."
+      },
+      {
+        id:"fu1b",label:"Follow-up 2",
+        title:"How Did You Validate the Proxy Assumption?",
+        question:"You used Microsoft's admin team as a proxy for all external customers. But what if their risk tolerance is different? How did you de-risk that assumption before shipping?",
+        summary:"The bet: if Microsoft's strictest compliance team signs off, external VIP customers will too. But how do you validate that assumption before shipping?",
+        star:{
+          s:"The core bet: if Microsoft's own admin team — under the world's strictest regulations — is comfortable with the governance model, external VIP customers will be too. But this was an assumption, not yet validated.",
+          t:"De-risk the proxy assumption without time or bandwidth to survey every external admin across different industries and regulatory contexts.",
+          a:"Made the bet explicit rather than hiding it. Three factors reinforced confidence:\n\n1. Prior relationship with VIP partners through previous feature previews — already understood their general compliance posture.\n\n2. The service agreement logic is universal — data handling responsibility flows through signed agreements regardless of which tools change.\n\n3. Private preview was designed as the validation gate, not a launch. Goal of V1 was to unblock specific partners and get real signal — not GA to everyone.",
+          r:"The proxy assumption held logically, with prior partner context as supporting evidence. True validation comes from private preview usage.\n\nLearning: when making a proxy bet, name it clearly, explain why it's the right proxy, and design the next step to be the real test."
+        },
+        quote:"I wasn't hiding the assumption — I named it. Microsoft is the strictest proxy I have access to. Private preview was always the real validation gate, not a rubber stamp."
+      }
+    ]
+  },
+  {
+    id:"ms2",num:"Story 02",
+    title:"Whole Life Hypothesis — Killing a Feature",
+    ctx:"Consumer + commercial convergence · Microsoft 365",
+    competencies:["conviction","killing","pivot","ownership"],
+    color:"#c77dff",bg:"rgba(199,125,255,0.1)",
+    tags:[{label:"conviction vs data",color:"#ffd93d",bg:"rgba(255,217,61,0.12)"},{label:"killing a feature",color:"#ff6b6b",bg:"rgba(255,107,107,0.12)"},{label:"strategic pivot",color:"#ff6bb5",bg:"rgba(255,107,181,0.12)"}],
+    summary:"Big company bet: users want work + personal on one device. Microsoft could upsell consumer licenses through enterprise. User research killed the hypothesis — twice. Then ChatGPT launched.",
+    star:{
+      s:"Microsoft had a unique position — strong in commercial, decent in consumer. The 'whole life hypothesis': users want work and personal on one device. If true, Microsoft could upsell consumer licenses to enterprise users by attaching personal accounts to work devices, securely.",
+      t:"Validate the hypothesis and build the business case. If true → significant consumer revenue opportunity. If false → stop investment before it scales.",
+      a:"Ran qualitative interviews with M365 commercial users. First round: hypothesis failed. Users feared personal data leaking to employer and feared accidentally leaking work data. Boundary separation was core — not a nice-to-have.\n\nDidn't accept the first no. Refined cohort to users who already blend work/personal on one device. Re-ran with explicit guardrails. Still failed.\n\nRecognized further refinement would require inventing a persona that doesn't exist in M365's distribution. Called it.\n\nSimultaneously: ChatGPT launched. Copilot announced. Leadership shifted to commercial-only. Two independent signals pointing the same direction.",
+      r:"Investment redirected to Copilot commercial. Whole life hypothesis paused with clear rationale documented.\n\nLearning: strong conviction deserves rigorous stress-testing. Know when iteration becomes optimism. When both user data and business strategy say no — kill it cleanly and move fast."
+    },
+    quote:"We narrowed the cohort, tightened the guardrails, re-ran the interviews. Still no. At that point, continuing would have been optimism — not rigor.",
+    followups:[
+      {
+        id:"fu2a",label:"Follow-up 1",
+        title:"How Did You Know You'd Done Enough?",
+        question:"After two rounds of refinement you still got 'no'. How do you know when you've been rigorous enough versus giving up too early?",
+        summary:"After two rounds of narrowing the cohort — still no. When does continued iteration become motivated reasoning rather than rigor?",
+        star:{
+          s:"After two rounds of hypothesis refinement — broad cohort first, then users who already blend work/personal — the data still said no. Had to decide: refine further, or call it?",
+          t:"Determine whether continuing to refine is genuine rigor or motivated reasoning — and make a defensible call either way.",
+          a:"Applied a clear test: could we continue refining the cohort without inventing a persona that doesn't exist in M365's actual distribution?\n\nAnswer: no. Going narrower meant targeting people our product vehicle (M365) would never reach at scale. Cohort and product would no longer be aligned.\n\nAdded Copilot strategic shift as a second independent signal. Two unrelated signals pointing the same way made the call clean and defensible.",
+          r:"Hypothesis formally killed with documented rationale. Investment redirected within weeks.\n\nLearning: you've done enough when further refinement requires inventing a persona your product can't actually reach. That's the line between rigor and wishful thinking."
+        },
+        quote:"We couldn't narrow further without creating a persona our product would never reach at scale. That's when I knew we were done."
+      },
+      {
+        id:"fu2b",label:"Follow-up 2",
+        title:"Why Kill It vs Keep It on a Slow Burn?",
+        question:"You'd invested significant time. Why not deprioritize and keep it warm rather than killing it outright? What would have had to be different to keep it alive?",
+        summary:"Why a clean kill over a slow burn? What's the real difference — and how do you justify it to leadership when there's still emotional investment?",
+        star:{
+          s:"After killing the hypothesis, the question arose: why not put it on the backburner? The investment was non-trivial. Market conditions could shift.",
+          t:"Make a clear and defensible call between 'kill' and 'slow burn' — and justify it to leadership.",
+          a:"The answer came from resource reality at Microsoft in that moment. With Copilot becoming the company's biggest bet, every prioritization decision would be evaluated against its contribution to commercial Copilot.\n\nThe whole life hypothesis was a pure consumer play. It would never win a prioritization battle. 'Keeping it warm' means: no engineers, no design time, no leadership attention — dead anyway, just slower and messier.\n\nA clean kill with documented rationale freed the team to move fast on what actually mattered.",
+          r:"Team redirected cleanly. No zombie project dragging attention. Documented rationale meant: if consumer becomes a priority again, the work can be picked up with context intact.\n\nLearning: 'keep it warm' is often a way of avoiding a hard decision. If you can't resource it meaningfully, a clean kill is more respectful of everyone's time."
+        },
+        quote:"Keeping it warm in a resource-constrained environment means it's dead anyway — just slower and messier. A clean kill was more honest, and freed us to move fast."
+      }
+    ]
+  }
+];
+
+/* ═══════════════════════════════
+   STATE
+═══════════════════════════════ */
+let S = {
+  level: 1,          // 1=root, 2=behavior stories, 3=detail
+  rootTab: "behaviors", // "behaviors" | "all"
+  compId: null,
+  storyId: null,
+  cardIdx: 0,        // which card in detail (0=main, 1=fu1, 2=fu2)
+  flipped: false
+};
+
+/* ═══════════════════════════════
+   NAVIGATE
+═══════════════════════════════ */
+function go(patch) {
+  const views = ["view-behaviors","view-all","view-stories","view-detail"];
+  views.forEach(v => document.getElementById(v).classList.add("fading"));
+  setTimeout(() => {
+    S = {...S, ...patch};
+    render();
+    views.forEach(v => document.getElementById(v).classList.remove("fading"));
+  }, 110);
+}
+
+function setRootTab(tab) {
+  S.rootTab = tab;
+  // update toggle buttons
+  document.querySelectorAll(".ttab").forEach((b,i)=>{
+    b.classList.toggle("on",(tab==="behaviors"&&i===0)||(tab==="all"&&i===1));
+  });
+  document.getElementById("view-behaviors").classList.toggle("active", tab==="behaviors");
+  document.getElementById("view-all").classList.toggle("active", tab==="all");
+  if(tab==="behaviors") renderBehaviors();
+  else renderAll();
+  renderBreadcrumb();
+}
+
+/* ═══════════════════════════════
+   MASTER RENDER
+═══════════════════════════════ */
+function render() {
+  // toggle visibility
+  document.getElementById("view-behaviors").classList.toggle("active", S.level===1 && S.rootTab==="behaviors");
+  document.getElementById("view-all").classList.toggle("active", S.level===1 && S.rootTab==="all");
+  document.getElementById("view-stories").classList.toggle("active", S.level===2);
+  document.getElementById("view-detail").classList.toggle("active", S.level===3);
+  document.getElementById("top-toggle").style.display = S.level===1 ? "flex" : "none";
+
+  renderBreadcrumb();
+  if(S.level===1 && S.rootTab==="behaviors") renderBehaviors();
+  if(S.level===1 && S.rootTab==="all") renderAll();
+  if(S.level===2) renderStories();
+  if(S.level===3) renderDetailView();
+}
+
+/* ═══════════════════════════════
+   BREADCRUMB
+═══════════════════════════════ */
+function renderBreadcrumb() {
+  const bc = document.getElementById("breadcrumb");
+  const comp = competencies.find(c=>c.id===S.compId);
+  const story = mainStories.find(s=>s.id===S.storyId);
+  let parts = [];
+  if(S.level===1){
+    parts=[`<span class="bc-item active">${S.rootTab==="behaviors"?"Behaviors":"All Stories"}</span>`];
+  } else if(S.level===2){
+    parts=[
+      `<button class="bc-item" onclick="go({level:1,rootTab:'behaviors'})">Behaviors</button>`,
+      `<span class="bc-sep">›</span>`,
+      `<span class="bc-item active" style="color:${comp.color}">${comp.name}</span>`
+    ];
+  } else if(S.level===3){
+    if(S.compId){
+      parts=[
+        `<button class="bc-item" onclick="go({level:1,rootTab:'behaviors'})">Behaviors</button>`,
+        `<span class="bc-sep">›</span>`,
+        `<button class="bc-item" onclick="go({level:2,storyId:null,cardIdx:0,flipped:false})" style="color:${comp.color}">${comp.name}</button>`,
+        `<span class="bc-sep">›</span>`,
+        `<span class="bc-item active">${story.title}</span>`
+      ];
+    } else {
+      parts=[
+        `<button class="bc-item" onclick="go({level:1,rootTab:'all'})">All Stories</button>`,
+        `<span class="bc-sep">›</span>`,
+        `<span class="bc-item active">${story.title}</span>`
+      ];
+    }
+  }
+  bc.innerHTML = parts.join("");
+}
+
+/* ═══════════════════════════════
+   LEVEL 1A — BEHAVIOR INDEX
+═══════════════════════════════ */
+function renderBehaviors() {
+  document.getElementById("view-behaviors").innerHTML = competencies.map(c=>{
+    const count = mainStories.filter(s=>s.competencies.includes(c.id)).length;
+    return `
+    <div class="comp-card" onclick="go({level:2,compId:'${c.id}',storyId:null,cardIdx:0,flipped:false});confetti()">
+      <div class="comp-icon" style="background:${c.bg};">${c.icon}</div>
+      <div class="comp-info">
+        <div class="comp-name">${c.name}</div>
+        <div class="comp-sub">${c.desc}</div>
+        <div class="comp-companies">${c.companies.map(co=>`<span class="co-badge" style="color:${c.color};border-color:${c.color}33;background:${c.bg};">${co}</span>`).join("")}</div>
+      </div>
+      <div class="comp-right">
+        <span class="comp-count" style="background:${c.bg};color:${c.color};">${count} ${count===1?"story":"stories"}</span>
+        <span class="comp-arrow">›</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+/* ═══════════════════════════════
+   LEVEL 1B — ALL STORIES
+═══════════════════════════════ */
+function renderAll() {
+  document.getElementById("view-all").innerHTML = mainStories.map(s=>`
+    <div class="all-story-card" onclick="go({level:3,storyId:'${s.id}',compId:null,cardIdx:0,flipped:false});confetti()" style="border-color:${s.color}22;">
+      <div class="as-meta">
+        <div class="as-num">${s.num}</div>
+        <div class="as-title">${s.title}</div>
+        <div class="as-ctx">${s.ctx}</div>
+        <div class="as-tags">${s.tags.map(t=>`<span class="as-tag" style="color:${t.color};background:${t.bg};border-color:${t.color}44;">${t.label}</span>`).join("")}</div>
+      </div>
+      <span class="as-arrow" style="color:${s.color};">›</span>
+    </div>`).join("");
+}
+
+/* ═══════════════════════════════
+   LEVEL 2 — MAIN STORIES LIST
+═══════════════════════════════ */
+function renderStories() {
+  const comp = competencies.find(c=>c.id===S.compId);
+  const filtered = mainStories.filter(s=>s.competencies.includes(S.compId));
+  document.getElementById("view-stories").innerHTML = `
+    <div class="section-head" style="background:${comp.bg};">
+      <div class="section-icon" style="background:rgba(0,0,0,0.2);">${comp.icon}</div>
+      <div>
+        <div class="section-title" style="color:${comp.color};">${comp.name}</div>
+        <div class="section-desc">${comp.desc}</div>
+        <div class="co-strip">${comp.companies.map(co=>`<span class="co-badge" style="color:${comp.color};border-color:${comp.color}33;background:rgba(0,0,0,0.15);">${co}</span>`).join("")}</div>
+      </div>
+    </div>
+    ${filtered.map(s=>`
+    <div class="main-story-card" onclick="go({level:3,storyId:'${s.id}',cardIdx:0,flipped:false});confetti()" style="border-color:${s.color}22;">
+      <div class="ms-num">${s.num}</div>
+      <div class="ms-title">${s.title}</div>
+      <div class="ms-ctx">${s.ctx}</div>
+      <div class="ms-tags">${s.tags.map(t=>`<span class="ms-tag" style="color:${t.color};background:${t.bg};border-color:${t.color}44;">${t.label}</span>`).join("")}</div>
+      <div class="ms-footer">
+        <div class="ms-hint">🔁 <b>${s.followups.length} follow-up${s.followups.length!==1?"s":""}</b> inside</div>
+        <span class="ms-arrow" style="color:${s.color};">›</span>
+      </div>
+    </div>`).join("")}`;
+}
+
+/* ═══════════════════════════════
+   LEVEL 3 — FLASHCARD DETAIL
+═══════════════════════════════ */
+function renderDetailView() {
+  const story = mainStories.find(s=>s.id===S.storyId);
+  const allCards = [
+    {type:"main", data: story},
+    ...story.followups.map(fu=>({type:"followup", data:fu}))
+  ];
+  const active = allCards[S.cardIdx];
+  const total = allCards.length;
+
+  // selector tabs
+  const tabsHtml = allCards.map((c,i)=>`
+    <button class="cstab ${i===S.cardIdx?"on":""}" onclick="selectCard(${i})">
+      <span class="cst-main">${i===0?"Main Story":c.data.label}</span>
+      <span class="cst-sub">${i===0?"your answer":"interviewer asks"}</span>
+    </button>`).join("");
+
+  // front content
+  let frontContent = "";
+  if(active.type==="main"){
+    frontContent = `
+      <div class="cf-top">
+        <div class="cf-num">${story.num.replace("Story ","")}</div>
+        <div class="cf-type" style="background:${story.bg};color:${story.color};">Main Story</div>
+      </div>
+      <span class="cf-category" style="background:${story.bg};color:${story.color};">Overview</span>
+      <div class="cf-title">${story.title}</div>
+      <div class="cf-sub">${story.ctx}</div>
+      <div class="cf-summary-box">
+        <div class="cf-summary-label">summary</div>
+        <div class="cf-summary-text">${story.summary}</div>
+      </div>
+      <div class="cf-tags">${story.tags.map(t=>`<span class="cf-tag" style="color:${t.color};background:${t.bg};border-color:${t.color}44;">${t.label}</span>`).join("")}</div>`;
+  } else {
+    const fu = active.data;
+    frontContent = `
+      <div class="cf-top">
+        <div class="cf-num" style="font-size:36px;color:rgba(255,255,255,0.18);">${fu.label}</div>
+        <div class="cf-type" style="background:rgba(255,217,61,0.15);color:#ffd93d;">Probe</div>
+      </div>
+      <span class="cf-category" style="background:rgba(255,217,61,0.1);color:#ffd93d;">Interviewer Follow-up</span>
+      <div class="cf-title">${fu.title}</div>
+      <div class="cf-q-box">
+        <div class="cf-q-label">they asked</div>
+        <div class="cf-q-text">"${fu.question}"</div>
+      </div>
+      <div class="cf-summary-box" style="flex:0;">
+        <div class="cf-summary-label">your approach</div>
+        <div class="cf-summary-text">${fu.summary}</div>
+      </div>`;
+  }
+
+  // back STAR content
+  const starData = active.type==="main" ? story.star : active.data.star;
+  const quoteData = active.type==="main" ? story.quote : active.data.quote;
+
+  const backContent = `
+    <div class="cb-header">
+      <span style="font-size:13px;font-weight:700;">${active.type==="main"?story.title:active.data.title}</span>
+      <div class="star-pills-row">
+        <span class="spill sp-s">S</span><span class="spill sp-t">T</span>
+        <span class="spill sp-a">A</span><span class="spill sp-r">R</span>
+      </div>
+    </div>
+    <div class="star-block">
+      <div class="star-row"><span class="star-badge sb-s">S</span><span class="star-lbl">Situation</span></div>
+      <div class="star-text">${starData.s.replace(/\n/g,"<br>")}</div>
+    </div>
+    <div class="divider"></div>
+    <div class="star-block">
+      <div class="star-row"><span class="star-badge sb-t">T</span><span class="star-lbl">Task</span></div>
+      <div class="star-text">${starData.t.replace(/\n/g,"<br>")}</div>
+    </div>
+    <div class="divider"></div>
+    <div class="star-block">
+      <div class="star-row"><span class="star-badge sb-a">A</span><span class="star-lbl">Action</span></div>
+      <div class="star-text">${starData.a.replace(/\n/g,"<br>")}</div>
+    </div>
+    <div class="divider"></div>
+    <div class="star-block">
+      <div class="star-row"><span class="star-badge sb-r">R</span><span class="star-lbl">Result</span></div>
+      <div class="star-text">${starData.r.replace(/\n/g,"<br>")}</div>
+    </div>
+    <div class="divider"></div>
+    <div class="key-quote">"${quoteData}"</div>`;
+
+  document.getElementById("view-detail").innerHTML = `
+    <div class="story-id-bar" style="background:${story.bg};">
+      <div class="sid-num" style="color:${story.color};">${story.num}</div>
+      <div class="sid-title">${story.title}</div>
+      <div class="sid-ctx">${story.ctx}</div>
+    </div>
+
+    <div class="card-selector">${tabsHtml}</div>
+
+    <div class="fc-meta">
+      <span class="fc-counter">${S.cardIdx+1} / ${total} · ${S.flipped?"STAR breakdown":"overview"}</span>
+      <div class="fc-flip-state">
+        <div class="fc-dot ${!S.flipped?"on":""}"></div>
+        <div class="fc-dot ${S.flipped?"on":""}"></div>
+      </div>
+    </div>
+
+    <div class="card-scene" id="card-scene" onclick="flipCard()">
+      <div class="card-inner ${S.flipped?"flipped":""}" id="card-inner">
+        <div class="card-face card-front">${frontContent}</div>
+        <div class="card-face card-back">${backContent}</div>
+      </div>
+    </div>`;
+
+  // swipe to change card
+  let tx=0,ty=0;
+  const scene = document.getElementById("card-scene");
+  scene.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+  scene.addEventListener("touchend",e=>{
+    const dx=e.changedTouches[0].clientX-tx;
+    const dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50){
+      if(dx<0&&S.cardIdx<total-1) selectCard(S.cardIdx+1);
+      else if(dx>0&&S.cardIdx>0) selectCard(S.cardIdx-1);
+    } else if(Math.abs(dx)<15&&Math.abs(dy)<15){
+      flipCard();
+    }
+  },{passive:true});
+}
+
+function flipCard() {
+  S.flipped = !S.flipped;
+  const inner = document.getElementById("card-inner");
+  if(inner) inner.classList.toggle("flipped", S.flipped);
+  // update meta
+  const meta = document.querySelector(".fc-meta .fc-counter");
+  const story = mainStories.find(s=>s.id===S.storyId);
+  const total = 1 + story.followups.length;
+  if(meta) meta.textContent = `${S.cardIdx+1} / ${total} · ${S.flipped?"STAR breakdown":"overview"}`;
+  document.querySelectorAll(".fc-dot").forEach((d,i)=>d.classList.toggle("on",(i===0&&!S.flipped)||(i===1&&S.flipped)));
+  if(S.flipped) confetti();
+}
+
+function selectCard(idx) {
+  S.cardIdx = idx;
+  S.flipped = false;
+  renderDetailView();
+}
+
+/* ═══════════════════════════════
+   CONFETTI
+═══════════════════════════════ */
+function confetti(){
+  const cols=["#ffd93d","#ff6b6b","#6bcb77","#4d96ff","#c77dff","#ff9f43"];
+  for(let i=0;i<14;i++){
+    const e=document.createElement("div");
+    e.className="cp";
+    e.style.cssText=`left:${10+Math.random()*80}%;top:28%;width:${5+Math.random()*6}px;height:${5+Math.random()*6}px;background:${cols[i%cols.length]};border-radius:${Math.random()>.5?"50%":"3px"};animation-delay:${Math.random()*.45}s;`;
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),1600);
+  }
+}
+
+/* ═══════════════════════════════
+   INIT
+═══════════════════════════════ */
+render();
+</script>
+</body>
+</html>
