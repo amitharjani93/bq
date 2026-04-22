@@ -8,15 +8,23 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#0f0e17;--surface:#1c1a2e;--surface2:#252340;--surface3:#2e2b50;
-  --text:#f4f2ff;--muted:#9b97be;--dim:#5a5780;--border:rgba(255,255,255,0.07);
-  --c1:#ff6b6b;--c2:#ffd93d;--c3:#6bcb77;--c4:#4d96ff;--c5:#c77dff;--c6:#ff9f43;--c7:#48dbfb;--c8:#ff6bb5;
+  --bg:#f7f6f2;--surface:#ffffff;--surface2:#eeece6;--surface3:#e4e1d8;
+  --text:#1a1814;--muted:#47443c;--dim:#80786a;--border:rgba(0,0,0,0.1);
+  --c1:#c13222;--c2:#9a7200;--c3:#1a7a3a;--c4:#1a52b8;--c5:#6a28d4;--c6:#b84e00;--c7:#0778a0;--c8:#c42470;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#0f0e17;--surface:#1c1a2e;--surface2:#252340;--surface3:#2e2b50;
+    --text:#f4f2ff;--muted:#cac6e8;--dim:#9e9abf;--border:rgba(255,255,255,0.1);
+    --c1:#ff7a6b;--c2:#ffd93d;--c3:#7dd98a;--c4:#6aabff;--c5:#d49fff;--c6:#ffb060;--c7:#5dd4f0;--c8:#ff85c8;
+  }
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
 body{min-height:100dvh;display:flex;flex-direction:column;}
 
 .blobs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.12;animation:drift 16s ease-in-out infinite alternate;}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.07;animation:drift 16s ease-in-out infinite alternate;}
+@media(prefers-color-scheme:dark){.blob{opacity:0.12;}}
 .b1{width:500px;height:500px;background:var(--c5);top:-150px;left:-150px;}
 .b2{width:350px;height:350px;background:var(--c4);bottom:50px;right:-100px;animation-delay:-6s;}
 .b3{width:280px;height:280px;background:var(--c1);top:50%;left:20%;animation-delay:-11s;}
@@ -33,7 +41,8 @@ body{min-height:100dvh;display:flex;flex-direction:column;}
 /* TOP TOGGLE — By Behavior / All Stories */
 .top-toggle{display:flex;gap:6px;margin-bottom:16px;background:var(--surface);border-radius:12px;padding:4px;border:1.5px solid var(--border);}
 .ttab{flex:1;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;padding:8px 10px;border-radius:9px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;text-align:center;}
-.ttab.on{background:var(--c2);color:#0f0e17;}
+.ttab.on{background:var(--c2);color:#1a1814;}
+@media(prefers-color-scheme:dark){.ttab.on{color:#0f0e17;}}
 
 /* BREADCRUMB */
 .breadcrumb{display:flex;align-items:center;gap:6px;margin-bottom:16px;flex-wrap:wrap;min-height:20px;}
@@ -152,7 +161,8 @@ body{min-height:100dvh;display:flex;flex-direction:column;}
 
 /* FRONT */
 .cf-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
-.cf-num{font-family:'Syne',sans-serif;font-size:50px;font-weight:800;line-height:1;letter-spacing:-3px;color:rgba(255,255,255,0.22);}
+.cf-num{font-family:'Syne',sans-serif;font-size:50px;font-weight:800;line-height:1;letter-spacing:-3px;color:rgba(0,0,0,0.1);}
+@media(prefers-color-scheme:dark){.cf-num{color:rgba(255,255,255,0.22);}}
 .cf-type{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:8px;margin-top:8px;}
 .cf-category{display:inline-flex;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:8px;margin-bottom:8px;align-self:flex-start;}
 .cf-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;line-height:1.3;color:var(--text);margin-bottom:5px;}
@@ -161,7 +171,8 @@ body{min-height:100dvh;display:flex;flex-direction:column;}
 .cf-summary-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;}
 .cf-summary-text{font-size:13px;color:var(--muted);line-height:1.65;}
 /* followup question box */
-.cf-q-box{background:rgba(255,217,61,0.07);border:1px solid rgba(255,217,61,0.2);border-radius:13px;padding:12px 15px;flex:1;margin-bottom:13px;}
+.cf-q-box{background:rgba(154,114,0,0.06);border:1px solid rgba(154,114,0,0.2);border-radius:13px;padding:12px 15px;flex:1;margin-bottom:13px;}
+@media(prefers-color-scheme:dark){.cf-q-box{background:rgba(255,217,61,0.07);border-color:rgba(255,217,61,0.2);}}
 .cf-q-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--c2);margin-bottom:6px;}
 .cf-q-text{font-size:13px;color:var(--muted);line-height:1.65;font-style:italic;}
 .cf-tags{display:flex;flex-wrap:wrap;gap:5px;}
@@ -171,17 +182,29 @@ body{min-height:100dvh;display:flex;flex-direction:column;}
 .cb-header{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .star-pills-row{display:flex;gap:4px;}
 .spill{font-family:'Syne',sans-serif;font-size:9px;font-weight:800;padding:3px 7px;border-radius:6px;}
-.sp-s{background:rgba(199,125,255,.2);color:#c77dff;}
-.sp-t{background:rgba(77,150,255,.2);color:#4d96ff;}
-.sp-a{background:rgba(107,203,119,.2);color:#6bcb77;}
-.sp-r{background:rgba(255,217,61,.2);color:#ffd93d;}
+.sp-s{background:rgba(106,40,212,0.1);color:#6a28d4;}
+.sp-t{background:rgba(26,82,184,0.1);color:#1a52b8;}
+.sp-a{background:rgba(26,122,58,0.1);color:#1a7a3a;}
+.sp-r{background:rgba(154,114,0,0.12);color:#9a7200;}
+@media(prefers-color-scheme:dark){
+  .sp-s{background:rgba(199,125,255,.2);color:#d49fff;}
+  .sp-t{background:rgba(77,150,255,.2);color:#6aabff;}
+  .sp-a{background:rgba(107,203,119,.2);color:#7dd98a;}
+  .sp-r{background:rgba(255,217,61,.2);color:#ffd93d;}
+}
 .star-block{margin-bottom:14px;}
 .star-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
 .star-badge{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;padding:3px 10px;border-radius:6px;}
-.sb-s{background:rgba(199,125,255,.15);color:#c77dff;}
-.sb-t{background:rgba(77,150,255,.15);color:#4d96ff;}
-.sb-a{background:rgba(107,203,119,.15);color:#6bcb77;}
-.sb-r{background:rgba(255,217,61,.15);color:#ffd93d;}
+.sb-s{background:rgba(106,40,212,0.08);color:#6a28d4;}
+.sb-t{background:rgba(26,82,184,0.08);color:#1a52b8;}
+.sb-a{background:rgba(26,122,58,0.08);color:#1a7a3a;}
+.sb-r{background:rgba(154,114,0,0.1);color:#9a7200;}
+@media(prefers-color-scheme:dark){
+  .sb-s{background:rgba(199,125,255,.15);color:#d49fff;}
+  .sb-t{background:rgba(77,150,255,.15);color:#6aabff;}
+  .sb-a{background:rgba(107,203,119,.15);color:#7dd98a;}
+  .sb-r{background:rgba(255,217,61,.15);color:#ffd93d;}
+}
 .star-lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;}
 .star-text{font-size:13px;color:var(--muted);line-height:1.68;}
 .divider{height:1px;background:var(--border);margin:3px 0 14px;}
@@ -218,6 +241,27 @@ body{min-height:100dvh;display:flex;flex-direction:column;}
 </div>
 
 <script>
+/* ═══════════════════════════════
+   COLOR MODE HELPERS
+   Dark-mode colours are vivid/pastel (readable on dark bg).
+   Light-mode colours are the darker equivalents (readable on white).
+═══════════════════════════════ */
+const darkToLight = {
+  "#4d96ff":"#1a52b8","rgba(77,150,255,0.12)":"rgba(26,82,184,0.09)","rgba(77,150,255,0.1)":"rgba(26,82,184,0.07)",
+  "#c77dff":"#6a28d4","rgba(199,125,255,0.12)":"rgba(106,40,212,0.09)","rgba(199,125,255,0.1)":"rgba(106,40,212,0.07)",
+  "#ffd93d":"#8a6200","rgba(255,217,61,0.12)":"rgba(138,98,0,0.1)","rgba(255,217,61,0.1)":"rgba(138,98,0,0.08)",
+  "#6bcb77":"#1a7a3a","rgba(107,203,119,0.12)":"rgba(26,122,58,0.09)","rgba(107,203,119,0.1)":"rgba(26,122,58,0.07)",
+  "#ff6b6b":"#b82a1a","rgba(255,107,107,0.12)":"rgba(184,42,26,0.09)","rgba(255,107,107,0.1)":"rgba(184,42,26,0.07)",
+  "#ff9f43":"#b84e00","rgba(255,159,67,0.12)":"rgba(184,78,0,0.09)","rgba(255,159,67,0.1)":"rgba(184,78,0,0.07)",
+  "#48dbfb":"#0778a0","rgba(72,219,251,0.12)":"rgba(7,120,160,0.09)","rgba(72,219,251,0.1)":"rgba(7,120,160,0.07)",
+  "#ff6bb5":"#b8186e","rgba(255,107,181,0.12)":"rgba(184,24,110,0.09)","rgba(255,107,181,0.1)":"rgba(184,24,110,0.07)",
+};
+function isDark(){return window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches;}
+function tc(val){if(isDark())return val;return darkToLight[val]||val;}
+
+// Re-render on system theme change
+if(window.matchMedia){window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change",()=>render());}
+
 /* ═══════════════════════════════
    DATA
 ═══════════════════════════════ */
@@ -318,6 +362,50 @@ const mainStories = [
           r:"Team redirected cleanly. No zombie project dragging attention. Documented rationale meant: if consumer becomes a priority again, the work can be picked up with context intact.\n\nLearning: 'keep it warm' is often a way of avoiding a hard decision. If you can't resource it meaningfully, a clean kill is more respectful of everyone's time."
         },
         quote:"Keeping it warm in a resource-constrained environment means it's dead anyway — just slower and messier. A clean kill was more honest, and freed us to move fast."
+      }
+    ]
+  },
+  {
+    id:"ms4",num:"Story 04",
+    title:"Killing the Chrome Extension",
+    ctx:"Personal Information Management · Microsoft 365 Personal",
+    competencies:["killing","ownership","conviction"],
+    color:"#ff6b6b",bg:"rgba(255,107,107,0.1)",
+    tags:[{label:"killing a feature",color:"#ff6b6b",bg:"rgba(255,107,107,0.12)"},{label:"ownership & accountability",color:"#6bcb77",bg:"rgba(107,203,119,0.12)"},{label:"conviction vs data",color:"#ffd93d",bg:"rgba(255,217,61,0.12)"}],
+    summary:"M365 Personal had a Chrome extension to sync recall data across browsers. After 18 months of GA, mobile hit 6M users but Chrome extension barely reached 100K. The upsell hypothesis — Chrome users would migrate to Edge — was mathematically dead. Called the kill.",
+    star:{
+      s:"M365 Personal offered cross-device information recall — passwords, data, history — synced across desktop, web, and mobile. For Edge users this worked natively. For Chrome users on Windows, we had built a Chrome extension. After 18 months post-GA, mobile had 6M active users and Edge sync was strong, but the Chrome extension had barely reached 100K users.",
+      t:"Decide whether to continue investing in the Chrome extension — keeping it in parity with every new feature — or stop investment and redirect engineering capacity. The implicit hypothesis being tested: could the extension serve as a bridge to upsell Chrome users onto Edge?",
+      a:"Looked at the data across three dimensions.\n\nFirst, raw usage: 100K Chrome extension users against 6M mobile users. The cohort using Chrome as their primary browser for M365 recall was marginal — not a strategic segment.\n\nSecond, the upsell math: even assuming the entire 100K extension users were candidates for migration, and applying a generous 2–5% industry conversion rate for browser switching, we'd move at most 2,000–5,000 users to Edge. That's not a needle-mover.\n\nThird, the investment cost: the Chrome extension required parity work with every new feature we shipped. It wasn't a one-time build — it was a continuous tax on engineering.\n\nImportant distinction: I did not validate whether the upsell hypothesis was false — I validated that even if it were true, the math didn't justify the investment. Those are different calls, and I was explicit about that with leadership.\n\nPresented two options: (1) maintenance mode — freeze the extension where it is, no new feature parity, minimal upkeep; (2) full deprecation — communicate a sunset timeline, migrate users, remove from the Chrome store. Recommended starting with maintenance mode to manage user disruption, with a clear path to full deprecation. Leadership aligned. Extension moved to maintenance, then deprecated with a migration window.",
+      r:"Engineering capacity freed up and redirected to core Edge and mobile features. Chrome extension removed from the store with a structured migration notice to affected users.\n\nLearning: when stopping investment, be precise about what you did and didn't validate. I didn't prove the hypothesis was wrong — I proved the ROI was insufficient even in the best case. That's a business call, not a product verdict, and framing it correctly matters for how leadership receives it."
+    },
+    quote:"I didn't prove the upsell hypothesis was false. I proved that even if it were true, the math didn't justify the cost. That's a business call — and it's a cleaner argument than trying to disprove a hypothesis you never fully tested.",
+    followups:[
+      {
+        id:"fu4a",label:"Follow-up 1",
+        title:"What If Leadership Had Pushed for an Upsell Experiment?",
+        question:"You made a business call without validating whether the upsell hypothesis was actually true. What if leadership had said: let's run a small experiment on the 100K users before killing it?",
+        summary:"The kill was based on ROI math, not a validated hypothesis. If leadership wanted to run the experiment first, how do you respond — and when would you agree vs hold the line?",
+        star:{
+          s:"The Chrome extension kill was a business decision — even if the upsell hypothesis were true, the conversion math didn't justify the engineering cost. Leadership could reasonably push back: why not validate the hypothesis with a small experiment before killing?",
+          t:"Decide whether to run a targeted upsell experiment on 100K Chrome extension users before deprecating — or hold the business case and move on.",
+          a:"Would engage the question seriously rather than dismiss it. The experiment is technically possible. The real question is: what would we learn, and what would we do with that learning?\n\nIf the experiment showed 2–5% conversion, we'd have validated the hypothesis — but we'd still be looking at 2,000–5,000 Edge users gained. That doesn't change the business case.\n\nIf the experiment showed 0% conversion, we've confirmed the hypothesis is false — useful signal, but we already made the call on ROI grounds.\n\nThe only scenario where the experiment changes the decision is if conversion came in dramatically higher than industry benchmarks — say 20%+. At that point we'd be looking at 20,000 users and a signal worth investigating.\n\nSo I'd reframe it: I'm not opposed to the experiment if someone believes conversion could be an outlier. But I'd want to pre-commit to the threshold that would change the decision before we run it — otherwise we're doing research for research's sake.\n\nIf capacity was genuinely available and the Edge team wanted to fund it, I'd support it. If it came out of my team's roadmap, I'd push back.",
+          r:"Framing the experiment as a pre-committed decision gate — not open-ended research — is what separates useful validation from motivated reasoning.\n\nLearning: when someone asks for more data before killing something, ask: what result would actually change the decision? If the answer is 'nothing realistic,' the experiment is delay, not diligence."
+        },
+        quote:"I'm not opposed to the experiment — but let's pre-commit to the number that would change the decision before we run it. Otherwise we're not doing research, we're buying time."
+      },
+      {
+        id:"fu4b",label:"Follow-up 2",
+        title:"Why Maintenance Mode First — Not Straight to Kill?",
+        question:"You recommended maintenance mode before full deprecation. Why not just kill it outright? What would have had to be true to skip straight to deprecation?",
+        summary:"The two-step approach — maintenance first, deprecation second — was a deliberate choice. When is a staged kill the right call vs a clean cut?",
+        star:{
+          s:"After deciding to stop investment in the Chrome extension, the question was how to execute: move straight to deprecation, or stage it through maintenance mode first.",
+          t:"Make a defensible call on the deprecation approach and explain the reasoning — both to the team and to the 100K users who would be affected.",
+          a:"The staged approach came down to two factors: user impact and confidence in the decision.\n\nOn user impact: 100K users had integrated the extension into their workflow. A hard kill with a short notice window would break their experience with no warning. Maintenance mode gave users continued functionality while we communicated the sunset timeline — respecting the relationship even as we wound it down.\n\nOn confidence: maintenance mode also gave us a buffer. If something materially changed in the first 60–90 days — say the Edge team announced a major Chrome initiative that changed the strategic picture — we could revisit. It's not that I expected this, but the cost of maintaining the status quo for one quarter was low.\n\nStraight to kill would have been appropriate if: (1) the extension had a security or compliance risk that made continued operation actively harmful, (2) the maintenance cost was so high that even 90 days of upkeep was unjustifiable, or (3) leadership had already committed to a hard platform migration with a fixed date.\n\nNone of those were true here, so the staged approach was lower risk without being meaningfully slower.",
+          r:"Maintenance mode executed cleanly. Deprecation followed with a structured user migration notice. No significant user backlash or escalations.\n\nLearning: a staged kill isn't indecision — it's risk management. The question is always: what's the cost of going slower vs the risk of going fast? When user disruption is real and the urgency isn't, stage it."
+        },
+        quote:"A staged kill isn't indecision. The question is what's the cost of going slower versus the risk of moving fast. When user disruption is real and the urgency isn't — stage it."
       }
     ]
   },
@@ -437,14 +525,14 @@ function renderBreadcrumb() {
     parts=[
       `<button class="bc-item" onclick="go({level:1,rootTab:'behaviors'})">Behaviors</button>`,
       `<span class="bc-sep">›</span>`,
-      `<span class="bc-item active" style="color:${comp.color}">${comp.name}</span>`
+      `<span class="bc-item active" style="color:${tc(comp.color)}">${comp.name}</span>`
     ];
   } else if(S.level===3){
     if(S.compId){
       parts=[
         `<button class="bc-item" onclick="go({level:1,rootTab:'behaviors'})">Behaviors</button>`,
         `<span class="bc-sep">›</span>`,
-        `<button class="bc-item" onclick="go({level:2,storyId:null,cardIdx:0,flipped:false})" style="color:${comp.color}">${comp.name}</button>`,
+        `<button class="bc-item" onclick="go({level:2,storyId:null,cardIdx:0,flipped:false})" style="color:${tc(comp.color)}">${comp.name}</button>`,
         `<span class="bc-sep">›</span>`,
         `<span class="bc-item active">${story.title}</span>`
       ];
@@ -465,16 +553,17 @@ function renderBreadcrumb() {
 function renderBehaviors() {
   document.getElementById("view-behaviors").innerHTML = competencies.map(c=>{
     const count = mainStories.filter(s=>s.competencies.includes(c.id)).length;
+    const col=tc(c.color),bg=tc(c.bg);
     return `
     <div class="comp-card" onclick="go({level:2,compId:'${c.id}',storyId:null,cardIdx:0,flipped:false});confetti()">
-      <div class="comp-icon" style="background:${c.bg};">${c.icon}</div>
+      <div class="comp-icon" style="background:${bg};">${c.icon}</div>
       <div class="comp-info">
         <div class="comp-name">${c.name}</div>
         <div class="comp-sub">${c.desc}</div>
-        <div class="comp-companies">${c.companies.map(co=>`<span class="co-badge" style="color:${c.color};border-color:${c.color}33;background:${c.bg};">${co}</span>`).join("")}</div>
+        <div class="comp-companies">${c.companies.map(co=>`<span class="co-badge" style="color:${col};border-color:${col}44;background:${bg};">${co}</span>`).join("")}</div>
       </div>
       <div class="comp-right">
-        <span class="comp-count" style="background:${c.bg};color:${c.color};">${count} ${count===1?"story":"stories"}</span>
+        <span class="comp-count" style="background:${bg};color:${col};">${count} ${count===1?"story":"stories"}</span>
         <span class="comp-arrow">›</span>
       </div>
     </div>`;
@@ -485,16 +574,19 @@ function renderBehaviors() {
    LEVEL 1B — ALL STORIES
 ═══════════════════════════════ */
 function renderAll() {
-  document.getElementById("view-all").innerHTML = mainStories.map(s=>`
-    <div class="all-story-card" onclick="go({level:3,storyId:'${s.id}',compId:null,cardIdx:0,flipped:false});confetti()" style="border-color:${s.color}22;">
+  document.getElementById("view-all").innerHTML = mainStories.map(s=>{
+    const col=tc(s.color),bg=tc(s.bg);
+    return `
+    <div class="all-story-card" onclick="go({level:3,storyId:'${s.id}',compId:null,cardIdx:0,flipped:false});confetti()" style="border-color:${col}33;">
       <div class="as-meta">
         <div class="as-num">${s.num}</div>
         <div class="as-title">${s.title}</div>
         <div class="as-ctx">${s.ctx}</div>
-        <div class="as-tags">${s.tags.map(t=>`<span class="as-tag" style="color:${t.color};background:${t.bg};border-color:${t.color}44;">${t.label}</span>`).join("")}</div>
+        <div class="as-tags">${s.tags.map(t=>`<span class="as-tag" style="color:${tc(t.color)};background:${tc(t.bg)};border-color:${tc(t.color)}44;">${t.label}</span>`).join("")}</div>
       </div>
-      <span class="as-arrow" style="color:${s.color};">›</span>
-    </div>`).join("");
+      <span class="as-arrow" style="color:${col};">›</span>
+    </div>`;
+  }).join("");
 }
 
 /* ═══════════════════════════════
@@ -503,26 +595,30 @@ function renderAll() {
 function renderStories() {
   const comp = competencies.find(c=>c.id===S.compId);
   const filtered = mainStories.filter(s=>s.competencies.includes(S.compId));
+  const ccol=tc(comp.color),cbg=tc(comp.bg);
   document.getElementById("view-stories").innerHTML = `
-    <div class="section-head" style="background:${comp.bg};">
-      <div class="section-icon" style="background:rgba(0,0,0,0.2);">${comp.icon}</div>
+    <div class="section-head" style="background:${cbg};">
+      <div class="section-icon" style="background:rgba(0,0,0,0.1);">${comp.icon}</div>
       <div>
-        <div class="section-title" style="color:${comp.color};">${comp.name}</div>
+        <div class="section-title" style="color:${ccol};">${comp.name}</div>
         <div class="section-desc">${comp.desc}</div>
-        <div class="co-strip">${comp.companies.map(co=>`<span class="co-badge" style="color:${comp.color};border-color:${comp.color}33;background:rgba(0,0,0,0.15);">${co}</span>`).join("")}</div>
+        <div class="co-strip">${comp.companies.map(co=>`<span class="co-badge" style="color:${ccol};border-color:${ccol}44;background:${cbg};">${co}</span>`).join("")}</div>
       </div>
     </div>
-    ${filtered.map(s=>`
-    <div class="main-story-card" onclick="go({level:3,storyId:'${s.id}',cardIdx:0,flipped:false});confetti()" style="border-color:${s.color}22;">
+    ${filtered.map(s=>{
+      const scol=tc(s.color),sbg=tc(s.bg);
+      return `
+    <div class="main-story-card" onclick="go({level:3,storyId:'${s.id}',cardIdx:0,flipped:false});confetti()" style="border-color:${scol}33;">
       <div class="ms-num">${s.num}</div>
       <div class="ms-title">${s.title}</div>
       <div class="ms-ctx">${s.ctx}</div>
-      <div class="ms-tags">${s.tags.map(t=>`<span class="ms-tag" style="color:${t.color};background:${t.bg};border-color:${t.color}44;">${t.label}</span>`).join("")}</div>
+      <div class="ms-tags">${s.tags.map(t=>`<span class="ms-tag" style="color:${tc(t.color)};background:${tc(t.bg)};border-color:${tc(t.color)}44;">${t.label}</span>`).join("")}</div>
       <div class="ms-footer">
         <div class="ms-hint">🔁 <b>${s.followups.length} follow-up${s.followups.length!==1?"s":""}</b> inside</div>
-        <span class="ms-arrow" style="color:${s.color};">›</span>
+        <span class="ms-arrow" style="color:${scol};">›</span>
       </div>
-    </div>`).join("")}`;
+    </div>`;
+    }).join("")}`;
 }
 
 /* ═══════════════════════════════
@@ -530,6 +626,7 @@ function renderStories() {
 ═══════════════════════════════ */
 function renderDetailView() {
   const story = mainStories.find(s=>s.id===S.storyId);
+  const scol=tc(story.color), sbg=tc(story.bg);
   const allCards = [
     {type:"main", data: story},
     ...story.followups.map(fu=>({type:"followup", data:fu}))
@@ -550,24 +647,24 @@ function renderDetailView() {
     frontContent = `
       <div class="cf-top">
         <div class="cf-num">${story.num.replace("Story ","")}</div>
-        <div class="cf-type" style="background:${story.bg};color:${story.color};">Main Story</div>
+        <div class="cf-type" style="background:${sbg};color:${scol};">Main Story</div>
       </div>
-      <span class="cf-category" style="background:${story.bg};color:${story.color};">Overview</span>
+      <span class="cf-category" style="background:${sbg};color:${scol};">Overview</span>
       <div class="cf-title">${story.title}</div>
       <div class="cf-sub">${story.ctx}</div>
       <div class="cf-summary-box">
         <div class="cf-summary-label">summary</div>
         <div class="cf-summary-text">${story.summary}</div>
       </div>
-      <div class="cf-tags">${story.tags.map(t=>`<span class="cf-tag" style="color:${t.color};background:${t.bg};border-color:${t.color}44;">${t.label}</span>`).join("")}</div>`;
+      <div class="cf-tags">${story.tags.map(t=>`<span class="cf-tag" style="color:${tc(t.color)};background:${tc(t.bg)};border-color:${tc(t.color)}44;">${t.label}</span>`).join("")}</div>`;
   } else {
     const fu = active.data;
     frontContent = `
       <div class="cf-top">
-        <div class="cf-num" style="font-size:36px;color:rgba(255,255,255,0.18);">${fu.label}</div>
-        <div class="cf-type" style="background:rgba(255,217,61,0.15);color:#ffd93d;">Probe</div>
+        <div class="cf-num" style="font-size:36px;" class="cf-num">${fu.label}</div>
+        <div class="cf-type" style="background:rgba(154,114,0,0.1);color:var(--c2);">Probe</div>
       </div>
-      <span class="cf-category" style="background:rgba(255,217,61,0.1);color:#ffd93d;">Interviewer Follow-up</span>
+      <span class="cf-category" style="background:rgba(154,114,0,0.08);color:var(--c2);">Interviewer Follow-up</span>
       <div class="cf-title">${fu.title}</div>
       <div class="cf-q-box">
         <div class="cf-q-label">they asked</div>
@@ -614,8 +711,8 @@ function renderDetailView() {
     <div class="key-quote">"${quoteData}"</div>`;
 
   document.getElementById("view-detail").innerHTML = `
-    <div class="story-id-bar" style="background:${story.bg};">
-      <div class="sid-num" style="color:${story.color};">${story.num}</div>
+    <div class="story-id-bar" style="background:${sbg};">
+      <div class="sid-num" style="color:${scol};">${story.num}</div>
       <div class="sid-title">${story.title}</div>
       <div class="sid-ctx">${story.ctx}</div>
     </div>
